@@ -12,7 +12,7 @@
     bottom_words,
   } from "./boards.js";
 
-  let day = 1;
+  let day = 0;
 
   let boxes = [];
   let words = all_words[day];
