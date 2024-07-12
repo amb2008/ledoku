@@ -1,6 +1,4 @@
 <script>
-  import { onMount } from "svelte";
-  import { writable } from "svelte/store";
   import {
     answer,
     starting_letters_ind,
@@ -13,7 +11,6 @@
     vert_middle_words,
     bottom_words,
   } from "./boards.js";
-  import { set } from "firebase/database";
 
   let day = 1;
 
