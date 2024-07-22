@@ -10,7 +10,7 @@
     top_words,
     vert_middle_words,
     bottom_words,
-  } from "../boards.js";
+  } from "./boards.js";
 
   let day = 1;
 
