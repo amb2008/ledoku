@@ -1,5 +1,5 @@
 import './app.css'
-import App from './App.svelte'
+import App from './routes/+page.svelte'
 import { inject } from '@vercel/analytics';
  
 inject({ mode: 'production' });
