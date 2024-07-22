@@ -12,7 +12,19 @@
     bottom_words,
   } from "./boards.js";
 
-  let day = 0;
+  let day = 1;
+
+  let url_object = new URL(window.location.href);
+  let url = url_object.href;
+  let title = "Ledoku #" + day;
+
+  if (url.includes("theme?cleantechies")) {
+    day = 3;
+    title = "CleanTechies";
+  } else if (url.includes("theme?dalton")) {
+    day = 2;
+    title = "Dalton";
+  }
 
   let boxes = [];
   let words = all_words[day];
@@ -83,6 +95,8 @@
       );
       if (letter_bank[index]) {
         letter_bank[index].count -= 1;
+      } else if (boxes[i].value !== ""){
+        alert("There are no more " + boxes[i].value + "s left in the letter bank.")
       }
     }
 
@@ -98,15 +112,23 @@
   let correct = false;
   function checkAnswer() {
     correct = true;
+    let structure = [];
     for (let i = 0; i < boxes.length; i++) {
+      if (boxes[i].value == "") {
+        structure.push("null");
+      } else {
+        structure.push(boxes[i].value);
+      }
       if (
         boxes[i].value !== answer[day][i] &&
         answer[day][i] !== "null" &&
         starting_letters[i] === "null"
       ) {
         correct = false;
-        break;
       }
+    }
+    if (day === 0) {
+      console.log(structure);
     }
   }
 
@@ -115,7 +137,6 @@
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Backspace") {
-      console.log(direction);
       setTimeout(() => {
         if (direction === "right") {
           prevInput();
@@ -234,7 +255,6 @@
       }
     }
     if (next_input) {
-      console.log(next_input);
       next_input.focus();
     } else {
       lastInput = lastInput + 1;
@@ -324,7 +344,7 @@
 
   function showInstructions() {
     alert(
-      "Fill in the grid with the letters in the letter bank. Each column and row containing more than 2 letters must make a word. Additionally, any outlined areas must also make a word. Good luck!"
+      "Fill in the grid with the letters in the letter bank. Horizontal and vertical areas of more than one letter must make a word, but black boxes seperate one word from another (similar to a crossword). Green letters are starting letters as hints. Additionally, any outlined areas must also make a word. Good luck!"
     );
   }
 
@@ -395,7 +415,7 @@
 
 <main>
   <div class="game-container">
-    <h1>Ledoku</h1>
+    <h1>{title}</h1>
     <div class="button-container">
       <button on:click={showInstructions}>Instructions</button>
       <button on:click={reset}>Reset</button>
@@ -572,6 +592,7 @@
 
   h1 {
     margin-top: -10px;
+    font-style: italic;
   }
 
   #grid-container {
@@ -599,7 +620,7 @@
   }
 
   .letter-bank {
-    background-color: antiquewhite;
+    background-color: rgb(255, 234, 204);
     border: 2px solid black;
     border-radius: 20px;
     margin-top: -10px;
@@ -623,7 +644,7 @@
   }
 
   button {
-    background-color: #4c7aaf;
+    background-color: rgb(224, 224, 224);
   }
 
   .button-container {
