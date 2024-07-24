@@ -1,3 +1,4 @@
+<!-- Use this link to create words https://word.tips/unscramble/ -->
 <script>
   import {
     answer,
@@ -12,6 +13,15 @@
     bottom_words,
   } from "./boards.js";
 
+  let screen_width = window.innerWidth;
+  let too_small = false;
+
+  if (screen_width < 750) {
+    too_small = true;
+  }
+
+
+
   let day = 1;
 
   let url_object = new URL(window.location.href);
@@ -24,7 +34,7 @@
   } else if (url.includes("dalton")) {
     day = 2;
     title = "Dalton";
-  } else if (url.includes("sandbox")){
+  } else if (url.includes("sandbox")) {
     day = 0;
     title = "Sandbox";
   }
@@ -419,6 +429,11 @@
 </script>
 
 <main>
+  {#if too_small}
+    <div style="text-align: center; margin-top: 20px;">
+      <h1>Sorry, this game is not optimized for mobile. Please play on a desktop.</h1>
+    </div>
+  {:else}
   <div class="game-container">
     <h1>{title}</h1>
     <div class="button-container">
@@ -578,6 +593,7 @@
         }}>X</button
       >
     </div>
+  {/if}
   {/if}
 </main>
 
