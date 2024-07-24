@@ -12,19 +12,15 @@
     bottom_words,
   } from "./boards.js";
 
-  import Router from "svelte-spa-router";
-
   // Import the pages
   import Home from "./pages/Home.svelte";
   import Cleantechies from "./pages/Cleantechies.svelte";
 
-  // Define the routes
-  const routes = {
-    "/": Home,
-    "/cleantechies": Cleantechies,
-  };
+  let url = window.location.href;
 </script>
 
-<main>
-  <Router {routes} />
-</main>
+{#if url.includes("cleantechies")}
+  <Cleantechies />
+{:else}
+  <Home />
+{/if}
