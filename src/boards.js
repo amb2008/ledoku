@@ -1,14 +1,13 @@
 const widths = [12, 5, 15, 12]
 const height = 7
 
-const all_words = [[],[6, 7, 8, 9, 16, 17, 18, 19], [3, 4, 5, 128, 129, 130, 131, 132, 133, 134, 137, 138, 139, 90, 105, 120, 135, 150], []];
-const left_words = [[],[6, 16], [3, 128, 137], []];
-const middle_words = [[],[7, 8, 17, 18], [4, 8, 129, 130, 131, 132, 133, 138, 139], []]; // words contains all but the last indices of each word
-const right_words = [[],[9, 19], [5, 134, 140], []];
-const top_words = [[],[], [90], []]
-const vert_middle_words = [[],[], [105, 120, 135], []]
-const bottom_words = [[],[], [150], []]
-const titles = ["Sandbox", "Ledoku #1", "Dalton", "CleanTechies"]
+const all_words = [[],[6, 7, 8, 9, 16, 17, 18, 19], [3, 4, 5, 128, 129, 130, 131, 132, 133, 134, 137, 138, 139, 90, 105, 120, 135, 150], [3, 4, 5, 6, 7, 23, 35, 47, 59, 54, 55, 56, 57, 24, 25, 26, 27]];
+const left_words = [[],[6, 16], [3, 128, 137], [3, 54, 24]];
+const middle_words = [[],[7, 8, 17, 18], [4, 8, 129, 130, 131, 132, 133, 138, 139], [4, 5, 6, 55, 56, 25, 26]]; // words contains all but the last indices of each word
+const right_words = [[],[9, 19], [5, 134, 140], [7, 57, 27]];
+const top_words = [[],[], [90], [23]]
+const vert_middle_words = [[],[], [105, 120, 135], [35, 47]]
+const bottom_words = [[],[], [150], [59]]
 
 const answer = [
   [],
