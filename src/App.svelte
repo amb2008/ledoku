@@ -13,14 +13,12 @@
     bottom_words,
   } from "./boards.js";
 
-  let screen_width = window.innerWidth;
-  let too_small = false;
+  // let screen_width = window.innerWidth;
+  // let too_small = false;
 
-  if (screen_width < 750) {
-    too_small = true;
-  }
-
-
+  // if (screen_width < 750) {
+  //   too_small = true;
+  // }
 
   let day = 1;
 
@@ -428,12 +426,7 @@
   }
 </script>
 
-<main>
-  {#if too_small}
-    <div style="text-align: center; margin-top: 20px;">
-      <h1>Sorry, this game is not optimized for mobile. Please play on a desktop.</h1>
-    </div>
-  {:else}
+<body>
   <div class="game-container">
     <h1>{title}</h1>
     <div class="button-container">
@@ -594,20 +587,12 @@
       >
     </div>
   {/if}
-  {/if}
-</main>
+  </body>
+
 
 <style>
-  main {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    width: 100vw;
-    left: 0px;
-  }
 
   .game-container {
-    margin-top: -300px;
     margin-bottom: 100px;
   }
 
@@ -619,7 +604,7 @@
   #grid-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr); /* Create 5 columns */
-    gap: 2px; /* Adjust the gap between boxes */
+    gap: 0.1vw; /* Adjust the gap between boxes */
     margin: 0 auto; /* Center the grid */
   }
 
@@ -632,12 +617,14 @@
   }
 
   input[type="text"] {
+    position: absolute;
     height: 3vw;
     width: 3vw;
-    padding: 2px;
     border: none;
     text-align: center;
     font-size: 3vw;
+    padding: 0;
+    margin-left: -1.5vw;
   }
 
   .letter-bank {
