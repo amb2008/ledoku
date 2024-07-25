@@ -20,7 +20,13 @@
   //   too_small = true;
   // }
 
+  let var_answer = answer;
+
   let day = 1;
+  let columns = 12;
+  let rows = 7;
+  let old_columns = columns;
+  let old_rows = rows;
 
   let url_object = new URL(window.location.href);
   let url = url_object.href;
@@ -48,9 +54,9 @@
 
   let starting_letters = [];
 
-  for (let i = 0; i < answer[day].length; i++) {
+  for (let i = 0; i < var_answer[day].length; i++) {
     if (starting_letters_ind[day].includes(i)) {
-      starting_letters.push(answer[day][i]);
+      starting_letters.push(var_answer[day][i]);
     } else {
       starting_letters.push("null");
     }
@@ -58,7 +64,7 @@
 
   boxes = [];
 
-  for (let i = 0; i < answer[day].length; i++) {
+  for (let i = 0; i < var_answer[day].length; i++) {
     boxes.push({ id: `box${i}`, value: "", show: true, background: "white" });
   }
 
@@ -66,16 +72,16 @@
 
   function countLetters() {
     letter_bank = [];
-    for (let i = 0; i < answer[day].length; i++) {
+    for (let i = 0; i < var_answer[day].length; i++) {
       let index = -1;
-      index = letter_bank.findIndex((item) => item.letter === answer[day][i]);
+      index = letter_bank.findIndex((item) => item.letter === var_answer[day][i]);
       if (index != -1) {
         letter_bank[index].count += 1;
       } else {
-        letter_bank.push({ letter: answer[day][i], count: 1 });
+        letter_bank.push({ letter: var_answer[day][i], count: 1 });
       }
 
-      if (answer[day][i] === "null") {
+      if (var_answer[day][i] === "null") {
         boxes[i].show = false;
       } else {
         boxes[i].show = true;
@@ -106,7 +112,7 @@
       );
       if (letter_bank[index]) {
         letter_bank[index].count -= 1;
-      } else if (boxes[i].value !== "") {
+      } else if (boxes[i].value !== "" && day != 0) {
         alert(
           "There are no more " + boxes[i].value + "s left in the letter bank."
         );
@@ -123,7 +129,7 @@
   subtractLetters();
 
   let correct = false;
-  function checkAnswer() {
+  function checkvar_answer() {
     correct = true;
     let structure = [];
     for (let i = 0; i < boxes.length; i++) {
@@ -133,8 +139,8 @@
         structure.push(boxes[i].value);
       }
       if (
-        boxes[i].value !== answer[day][i] &&
-        answer[day][i] !== "null" &&
+        boxes[i].value !== var_answer[day][i] &&
+        var_answer[day][i] !== "null" &&
         starting_letters[i] === "null"
       ) {
         correct = false;
@@ -184,7 +190,7 @@
       boxes[index].value = value.toUpperCase().slice(-1);
 
       subtractLetters();
-      checkAnswer();
+      checkvar_answer();
       if (boxes[index].value.length > 0) {
         nextInput();
       }
@@ -206,7 +212,7 @@
         next_id = `box${num}`;
         next_input = document.getElementById(next_id);
         lastInput = num;
-        if (num > answer[day].length) {
+        if (num > var_answer[day].length) {
           num = 0;
         }
         if (counter > 100) {
@@ -232,7 +238,7 @@
         next_id = `box${num}`;
         next_input = document.getElementById(next_id);
         lastInput = num;
-        if (num > answer[day].length) {
+        if (num > var_answer[day].length) {
           num = num % widths[day];
         }
         if (counter > 100) {
@@ -261,7 +267,7 @@
       next_input = document.getElementById(next_id);
       lastInput = num;
       if (num < 0) {
-        num = answer[day].length - 1;
+        num = var_answer[day].length - 1;
       }
       if (counter > 100) {
         break;
@@ -287,7 +293,7 @@
       next_id = `box${num}`;
       next_input = document.getElementById(next_id);
       lastInput = num;
-      if (num > answer[day].length) {
+      if (num > var_answer[day].length) {
         num = 0;
       }
       if (counter > 100) {
@@ -314,7 +320,7 @@
       next_id = `box${num}`;
       next_input = document.getElementById(next_id);
       lastInput = num;
-      if (num > answer[day].length) {
+      if (num > var_answer[day].length) {
         num = (num % widths[day]) - widths[day];
       }
       if (counter > 100) {
@@ -342,7 +348,7 @@
       next_input = document.getElementById(next_id);
       lastInput = num;
       if (num < 0) {
-        num = answer[day].length + (num % widths[day]) + widths[day];
+        num = var_answer[day].length + (num % widths[day]) + widths[day];
       }
       if (counter > 100) {
         break;
@@ -396,12 +402,12 @@
 
     let boxes_highlight = [];
 
-    for (let i = 0; i < answer[day].length; i++) {
+    for (let i = 0; i < var_answer[day].length; i++) {
       if (direction === "down") {
         if (i % widths[day] === index % widths[day]) {
-          if (answer[day][i] == "null" && i < index) {
+          if (var_answer[day][i] == "null" && i < index) {
             boxes_highlight = [];
-          } else if (answer[day][i] == "null" && i > index) {
+          } else if (var_answer[day][i] == "null" && i > index) {
             break;
           } else {
             boxes_highlight.push(i);
@@ -409,9 +415,9 @@
         }
       } else {
         if (Math.floor(i / widths[day]) === Math.floor(index / widths[day])) {
-          if (answer[day][i] == "null" && i < index) {
+          if (var_answer[day][i] == "null" && i < index) {
             boxes_highlight = [];
-          } else if (answer[day][i] == "null" && i > index) {
+          } else if (var_answer[day][i] == "null" && i > index) {
             break;
           } else {
             boxes_highlight.push(i);
@@ -424,14 +430,59 @@
       boxes[boxes_highlight[i]].background = "lightblue";
     }
   }
+
+  $: {
+    if (old_columns != columns || old_rows != rows) {
+      if (old_columns < columns){
+        let counter = 0
+        for (let i = 0; i < rows; i++) {
+          boxes.splice(i*old_columns+counter+old_columns, 0, { id: `box${i}`, value: "", show: true, background: "white" });
+          var_answer[day].splice(i+counter, 0, "Q");
+          starting_letters.push("null");
+          counter += 1;
+        }
+        widths[day] +=1 
+      } else if (old_columns > columns){
+        let counter = 0
+        for (let i = 0; i < rows; i++) {
+          boxes.splice(i*old_columns+counter+old_columns-1, 1);
+          var_answer[day].splice(i+counter, 1);
+          starting_letters.splice(i+counter, 1);
+          counter -= 1;
+        } 
+        widths[day] -=1 
+      } else if (old_rows < rows){
+        for (let i = 0; i < columns; i++) {
+          boxes.push({ id: `box${i}`, value: "", show: true, background: "white" });
+          var_answer[day].push("Q");
+          starting_letters.push("null");
+        }
+      } else if (old_rows > rows){
+        for (let i = 0; i < columns; i++) {
+          boxes.pop();
+          var_answer[day].pop();
+          starting_letters.pop();
+        }
+      }
+
+      for (let i = 0; i<boxes.length; i++){
+        boxes[i].id = `box${i}`
+      }
+      var_answer = var_answer
+      boxes = boxes
+      old_columns = columns;
+      old_rows = rows;
+    }
+  }
 </script>
 
 <body>
   <div class="game-container">
     <h1>{title}</h1>
     <div class="button-container">
-      <button on:click={showInstructions}>Instructions</button>
       <button on:click={reset}>Reset</button>
+      {#if day != 0}
+      <button on:click={showInstructions}>Instructions</button>
       <button
         on:click={() => {
           autocheck = !autocheck;
@@ -440,7 +491,16 @@
         <input type="checkbox" checked={autocheck} />
         Autocheck
       </button>
+      {:else}
+      <button on:click={()=>{columns+=1}}>Add Column</button>
+      <button on:click={()=>{columns-=1}}>Remove Column</button>
+      <button on:click={()=>{rows+=1}}>Add Row</button>
+      <button on:click={()=>{rows-=1}}>Remove Row</button>
+      <!-- Columns <input type="number" bind:value={columns}/>
+      Rows <input type="number" bind:value={rows}/> -->
+      {/if}
     </div>
+    {#if day != 0}
     <div class="letter-bank">
       <h2>Letter Bank</h2>
       {#each letter_bank as item, i}
@@ -449,6 +509,7 @@
         {/if}
       {/each}
     </div>
+    {/if}
     <div
       id="grid-container"
       style="grid-template-columns: repeat({widths[day]}, 1fr)"
@@ -559,7 +620,7 @@
                 on:input={handleInput(id)}
                 style="color: {value.length > 0
                   ? autocheck
-                    ? value != answer[day][i]
+                    ? value != var_answer[day][i]
                       ? 'red'
                       : 'blue'
                     : 'black'
@@ -603,6 +664,7 @@
 
   #grid-container {
     display: grid;
+    /* width: 50vw; */
     grid-template-columns: repeat(5, 1fr); /* Create 5 columns */
     gap: 0.1vw; /* Adjust the gap between boxes */
     margin: 0 auto; /* Center the grid */
@@ -625,6 +687,10 @@
     font-size: 3vw;
     padding: 0;
     margin-left: -1.5vw;
+  }
+
+  input[type="number"] {
+    width: 3vw;
   }
 
   .letter-bank {
@@ -652,7 +718,7 @@
   }
 
   button {
-    background-color: rgb(224, 224, 224);
+    background-color: rgb(234, 234, 234);
   }
 
   .button-container {
