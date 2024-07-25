@@ -719,6 +719,7 @@
 
   button {
     background-color: rgb(234, 234, 234);
+    color: black;
   }
 
   .button-container {
