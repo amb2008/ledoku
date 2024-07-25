@@ -19,7 +19,8 @@
   // if (screen_width < 750) {
   //   too_small = true;
   // }
-
+  
+  let wordbank = false;
   let var_answer = answer;
 
   let day = 1;
@@ -41,6 +42,13 @@
   } else if (url.includes("sandbox")) {
     day = 0;
     title = "Sandbox";
+  }
+
+if (day == 0){
+    setTimeout(() => {
+        const wordbank_input = document.getElementById("word-bank");
+        wordbank_input.addEventListener('input', ()=>{wordbank=true, wordbank=wordbank});
+    }, 1000);
   }
 
   let boxes = [];
@@ -155,7 +163,8 @@
   let direction = "right";
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Backspace") {
+    console.log(event.key)
+    if (event.key === "Backspace" && wordbank==false) {
       setTimeout(() => {
         if (direction === "right") {
           prevInput();
@@ -165,20 +174,32 @@
       }, 1);
     }
 
-    if (event.key === "ArrowRight") {
+    if (event.key === "ArrowRight" && wordbank==false) {
       nextInput2();
     }
 
-    if (event.key === "ArrowLeft") {
+    if (event.key === "ArrowLeft" && wordbank==false) {
       prevInput();
     }
 
-    if (event.key === "ArrowDown") {
+    if (event.key === "ArrowDown" && wordbank==false) {
       downInput();
     }
 
-    if (event.key === "ArrowUp") {
+    if (event.key === "ArrowUp" && wordbank==false) {
       upInput();
+    }
+
+    if (event.key === "Enter" && wordbank==false) {
+      clickDirectionSwap(`box${lastInput}`);
+      document.getElementById(`box${lastInput}`).focus();
+    }
+
+    if (event.key === "Tab" && wordbank==false) {
+      clickDirectionSwap(`box${lastInput}`);
+      setTimeout(() => {
+        document.getElementById(`box${lastInput}`).focus();
+      }, 0.0001);
     }
   });
 
@@ -648,10 +669,19 @@
       >
     </div>
   {/if}
+  {#if day === 0}
+  <textarea class="word-bank" id="word-bank" placeholder="Words you want to use" on:change={()=>{wordbank=true}} on:focus={()=>{wordbank=true}} on:blur={()=>{wordbank=false}}></textarea>
+  {/if}
+  {#if day === 0}
+  {/if}
   </body>
 
 
 <style>
+
+  body{
+    background: white;
+  }
 
   .game-container {
     margin-bottom: 100px;
@@ -700,6 +730,15 @@
     margin-top: -10px;
     margin-bottom: 20px;
     padding: 20px;
+  }
+
+  .word-bank {
+    width: 50vw;
+    height: 300px;
+    margin-left: 2vw;
+    display: block;
+    font-size: 20px;
+    overflow-x: scroll;
   }
 
   .correct {
