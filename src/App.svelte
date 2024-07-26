@@ -13,7 +13,7 @@
     bottom_words,
   } from "./boards.js";
 
-  // let screen_width = window.innerWidth;
+  let screen_width = window.innerWidth;
   // let too_small = false;
 
   // if (screen_width < 750) {
@@ -23,7 +23,7 @@
   let wordbank = false;
   let var_answer = answer;
 
-  let day = 1;
+  let day = 3;
   let columns = 12;
   let rows = 7;
   let old_columns = columns;
@@ -166,7 +166,6 @@ if (day == 0){
   let direction = "right";
 
   document.addEventListener("keydown", (event) => {
-    console.log(event.key)
     if (event.key === "Backspace" && wordbank==false) {
       setTimeout(() => {
         if (direction === "right") {
@@ -468,6 +467,21 @@ if (day == 0){
     checkvar_answer();
   }
 
+  let box_width = "3vw";
+  let font_size = "3vw";
+  let raw_box_width = 150;
+  function find_needed_width(){
+    let grid_element = document.getElementById("grid-container");
+    let grid_width = grid_element.offsetWidth;
+    box_width = grid_width / columns;
+    raw_box_width = box_width;
+    box_width = box_width + "px";
+  }
+
+  setTimeout(() => {
+    find_needed_width();
+  }, 10);
+
   $: {
     if (old_columns != columns || old_rows != rows) {
       if (old_columns < columns){
@@ -559,7 +573,9 @@ if (day == 0){
           {#if starting_letters[i] != "null"}
             <div
               class="grid-item"
-              style="border: {words.includes(i)
+              style="width: {box_width}; 
+              height: {box_width};
+              border: {words.includes(i)
                 ? '2px solid black'
                 : ''}; border-right: {left_word.includes(i) ||
               middle_word.includes(i)
@@ -601,13 +617,14 @@ if (day == 0){
                 type="text"
                 value={starting_letters[i]}
                 disabled
-                style="color: green; background: {background};"
+                style="width: {box_width}; height: {box_width}; margin-left: {raw_box_width/-2 + "px"}; font-size: {font_size}; color: green; background: {background};"
               />
             </div>
           {:else}
             <div
               class="grid-item"
-              style="border: {words.includes(i)
+              style="width: {box_width}; 
+              height: {box_width}; border: {words.includes(i)
                 ? '2px solid black'
                 : ''}; border-right: {left_word.includes(i) ||
               middle_word.includes(i)
@@ -658,7 +675,7 @@ if (day == 0){
                   directionSwap(id);
                 }}
                 on:input={handleInput(id)}
-                style="color: {value.length > 0
+                style="width: {box_width}; height: {box_width}; margin-left: {raw_box_width/-2 + "px"}; font-size: {font_size}; color: {value.length > 0
                   ? autocheck
                     ? value != var_answer[day][i]
                       ? 'red'
@@ -670,7 +687,8 @@ if (day == 0){
             </div>
           {/if}
         {:else}
-          <div class="grid-item" style="background-color: black;">
+          <div class="grid-item" style="background-color: black; width: {box_width}; 
+              height: {box_width};">
             <input type="text" disabled style="background-color: black;" />
           </div>
         {/if}
@@ -702,6 +720,14 @@ if (day == 0){
     background: white;
   }
 
+  @media (min-width: 750px){
+    body{
+      scale: 0.9;
+      margin-top: -3vw;
+      overflow: hidden;
+    }
+  } 
+
   .game-container {
     margin-bottom: 100px;
   }
@@ -713,7 +739,6 @@ if (day == 0){
 
   #grid-container {
     display: grid;
-    /* width: 50vw; */
     grid-template-columns: repeat(5, 1fr); /* Create 5 columns */
     gap: 0.1vw; /* Adjust the gap between boxes */
     margin: 0 auto; /* Center the grid */
@@ -794,6 +819,7 @@ if (day == 0){
   button {
     background-color: rgb(224, 232, 245);
     color: black;
+    margin-top: 10px;
   }
 
   .button-container {
