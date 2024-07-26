@@ -1,13 +1,13 @@
-const widths = [12, 5, 15, 12]
+const widths = [12, 5, 15, 12, 10]
 const height = 7
 
-const all_words = [[],[6, 7, 8, 9, 16, 17, 18, 19], [3, 4, 5, 128, 129, 130, 131, 132, 133, 134, 137, 138, 139, 90, 105, 120, 135, 150], [3, 4, 5, 6, 7, 23, 35, 47, 59, 54, 55, 56, 57, 24, 25, 26, 27]];
-const left_words = [[],[6, 16], [3, 128, 137], [3, 54, 24]];
-const middle_words = [[],[7, 8, 17, 18], [4, 8, 129, 130, 131, 132, 133, 138, 139], [4, 5, 6, 55, 56, 25, 26]]; // words contains all but the last indices of each word
-const right_words = [[],[9, 19], [5, 134, 140], [7, 57, 27]];
-const top_words = [[],[], [90], [23]]
-const vert_middle_words = [[],[], [105, 120, 135], [35, 47]]
-const bottom_words = [[],[], [150], [59]]
+const all_words = [[],[6, 7, 8, 9, 16, 17, 18, 19], [3, 4, 5, 128, 129, 130, 131, 132, 133, 134, 137, 138, 139, 90, 105, 120, 135, 150], [3, 4, 5, 6, 7, 23, 35, 47, 59, 54, 55, 56, 57, 24, 25, 26, 27], [32, 33, 34, 35, 36, 37, 38, 39, 73, 74, 75, 63, 64, 65, 4, 5, 6, 7]];
+const left_words = [[],[6, 16], [3, 128, 137], [3, 54, 24], [32, 73, 63, 4]];
+const middle_words = [[],[7, 8, 17, 18], [4, 8, 129, 130, 131, 132, 133, 138, 139], [4, 5, 6, 55, 56, 25, 26], [33, 34, 35, 36, 37, 38, 74, 64, 5, 6]]; // words contains all but the last indices of each word
+const right_words = [[],[9, 19], [5, 134, 140], [7, 57, 27], [39, 75, 65, 7]];
+const top_words = [[],[], [90], [23], []]
+const vert_middle_words = [[],[], [105, 120, 135], [35, 47], []]
+const bottom_words = [[],[], [150], [59], []]
 
 const answer = [
   [],
@@ -209,7 +209,8 @@ const answer = [
     "null",
     "null",
     "null",
-  ], ['V', 'null', 'null', 'S', 'T', 'A', 'R', 'T', 'U', 'P', 'null', 'C', 'E', 'R', 'A', 'null', 'H', 'I', 'null', 'null', 'null', 'null', 'null', 'L', 'N', 'U', 'M', 'B', 'E', 'R', 'S', 'null', 'P', 'U', 'R', 'E', 'T', 'I', 'P', 'null', 'null', 'D', 'O', 'M', 'E', 'S', 'null', 'A', 'U', 'N', 'null', 'A', 'I', 'R', 'L', 'I', 'N', 'E', 'null', 'N', 'R', 'null', 'null', 'null', 'C', 'O', 'A', 'L', 'null', 'null', 'null', 'E', 'E', 'N', 'T', 'R', 'E', 'P', 'R', 'E', 'N', 'E', 'U', 'R']
+  ], ['V', 'null', 'null', 'S', 'T', 'A', 'R', 'T', 'U', 'P', 'null', 'C', 'E', 'R', 'A', 'null', 'H', 'I', 'null', 'null', 'null', 'null', 'null', 'L', 'N', 'U', 'M', 'B', 'E', 'R', 'S', 'null', 'P', 'U', 'R', 'E', 'T', 'I', 'P', 'null', 'null', 'D', 'O', 'M', 'E', 'S', 'null', 'A', 'U', 'N', 'null', 'A', 'I', 'R', 'L', 'I', 'N', 'E', 'null', 'N', 'R', 'null', 'null', 'null', 'C', 'O', 'A', 'L', 'null', 'null', 'null', 'E', 'E', 'N', 'T', 'R', 'E', 'P', 'R', 'E', 'N', 'E', 'U', 'R'],
+  ['E', 'null', 'null', 'T', 'R', 'A', 'V', 'E', 'L', 'S', 'L', 'A', 'N', 'E', 'null', 'T', 'null', 'X', 'null', 'Y', 'E', 'L', 'E', 'C', 'T', 'null', 'S', 'I', 'G', 'N', 'M', 'A', 'T', 'H', 'E', 'M', 'A', 'T', 'I', 'C', 'E', 'null', 'Z', 'null', 'C', 'null', 'I', 'null', 'V', 'null', 'N', 'null', 'E', 'N', 'H', 'A', 'N', 'C', 'E', 'S', 'T', 'null', 'R', 'A', 'I', 'L', 'null', 'A', 'null', 'E', 'S', 'C', 'O', 'P', 'E', 'T', 'H', 'R', 'E', 'E']
 ];
 
 let test_board = []
@@ -223,7 +224,8 @@ const starting_letters_ind = [
   [],
   [0, 3, 6, 13, 15, 16, 19, 25],
   [3, 19, 25, 32, 49, 52, 62, 65, 72, 60, 75, 85, 95, 97, 104, 107, 120, 123, 130, 137, 157],
-  [0, 4, 5, 8, 9, 14, 20, 23, 25, 30, 32, 38, 41, 45, 47, 48, 49, 52, 55, 59, 64, 67, 72, 75, 81, 82]
+  [0, 4, 5, 8, 9, 14, 20, 23, 25, 30, 32, 38, 41, 45, 47, 48, 49, 52, 55, 59, 64, 67, 72, 75, 81, 82],
+  [10, 4, 6, 9, 13, 15, 22, 27, 31, 34, 46, 50, 54, 59, 60, 62, 65, 73, 77]
 ];
 
 export {answer, starting_letters_ind, all_words, left_words, middle_words, right_words, widths, top_words, vert_middle_words, bottom_words}

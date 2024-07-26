@@ -33,15 +33,18 @@
   let url = url_object.href;
   let title = "Ledoku #" + day;
 
-  if (url.includes("cleantechies")) {
-    day = 3;
-    title = "CleanTechies";
-  } else if (url.includes("dalton")) {
+  if (url.includes("dalton")) {
     day = 2;
     title = "Dalton";
   } else if (url.includes("sandbox")) {
     day = 0;
     title = "Sandbox";
+  } else if (url.includes("cleantechies195")){
+    day = 4;
+    title = "CleanTechies EP #195";
+  } else if (url.includes("cleantechies")) {
+    day = 3;
+    title = "CleanTechies";
   }
 
 if (day == 0){
@@ -452,6 +455,19 @@ if (day == 0){
     }
   }
 
+  function hint(){
+    let unshown_letters = [];
+    for (let i = 0; i < boxes.length; i++){
+      if (boxes[i].value == "" && var_answer[day][i] != "null" && starting_letters[i] == "null"){
+        unshown_letters.push(i);
+      }
+    }
+
+    let random_index = Math.floor(Math.random() * unshown_letters.length);
+    starting_letters[unshown_letters[random_index]] = var_answer[day][unshown_letters[random_index]];
+    checkvar_answer();
+  }
+
   $: {
     if (old_columns != columns || old_rows != rows) {
       if (old_columns < columns){
@@ -509,9 +525,10 @@ if (day == 0){
           autocheck = !autocheck;
         }}
       >
-        <input type="checkbox" checked={autocheck} />
         Autocheck
+        <input type="checkbox" checked={autocheck} />
       </button>
+      <button on:click={hint}>Hint</button>
       {:else}
       <button on:click={()=>{columns+=1}}>Add Column</button>
       <button on:click={()=>{columns-=1}}>Remove Column</button>
@@ -523,12 +540,14 @@ if (day == 0){
     </div>
     {#if day != 0}
     <div class="letter-bank">
-      <h2>Letter Bank</h2>
-      {#each letter_bank as item, i}
-        {#if item.letter != "null" && item.count > 0}
-          <span><strong>{item.letter}</strong><sub>{item.count}</sub></span> &nbsp;
-        {/if}
-      {/each}
+      <div class="letter-bank-label">Letter Bank</div>
+      <div class="letter-bank-content">
+        {#each letter_bank as item, i}
+          {#if item.letter != "null" && item.count > 0}
+            <span><strong>{item.letter}</strong><sub>{item.count}</sub></span> &nbsp;
+          {/if}
+        {/each}
+      </div>
     </div>
     {/if}
     <div
@@ -724,11 +743,27 @@ if (day == 0){
   }
 
   .letter-bank {
-    background-color: rgb(255, 234, 204);
-    border: 2px solid black;
+    /* background-color: rgb(255, 234, 204); */
+    border: 1px solid black;
     border-radius: 20px;
     margin-top: -10px;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .letter-bank-label{
+    font-size: 20px;
+    align-self: flex-start;
+    background-color: rgb(204, 242, 255);
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 20px 20px 0px 0px;
+  }
+
+  .letter-bank-content {
+    color: black;
     padding: 20px;
   }
 
@@ -757,7 +792,7 @@ if (day == 0){
   }
 
   button {
-    background-color: rgb(234, 234, 234);
+    background-color: rgb(224, 232, 245);
     color: black;
   }
 
