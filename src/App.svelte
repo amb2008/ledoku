@@ -42,6 +42,9 @@
   } else if (url.includes("cleantechies195")){
     day = 4;
     title = "CleanTechies EP #195";
+  } else if (url.includes("cleantechies196")){
+    day = 5;
+    title = "CleanTechies EP #196";
   } else if (url.includes("cleantechies")) {
     day = 3;
     title = "CleanTechies";
