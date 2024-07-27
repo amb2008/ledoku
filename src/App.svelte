@@ -16,9 +16,9 @@
   let screen_width = window.innerWidth;
   // let too_small = false;
 
-  // if (screen_width < 750) {
-  //   too_small = true;
-  // }
+  if (screen_width < 750) {
+    alert("This game is not optimized for mobile, please use desktop.");
+  }
   
   let wordbank = false;
   let var_answer = answer;
@@ -31,7 +31,8 @@
 
   let url_object = new URL(window.location.href);
   let url = url_object.href;
-  let title = "Ledoku #" + day;
+  // let title = "Ledoku #" + day;
+  let title = "CleanTechies"
 
   if (url.includes("dalton")) {
     day = 2;
