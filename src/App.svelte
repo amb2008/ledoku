@@ -710,7 +710,7 @@ if (day == 0){
   {#if day === 0}
   {/if}
   </body>
-  {#if !correct}
+  {#if correct}
     <div class="correct">
       You Won!
       <button
@@ -822,6 +822,8 @@ if (day == 0){
     border-radius: 20px;
     font-size: 30px;
     line-height: 10vw;
+    filter: blur(0.5px);
+    opacity: 0.9;
   }
 
   button {
