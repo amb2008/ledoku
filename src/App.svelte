@@ -156,8 +156,14 @@
         (item) => item.letter === boxes[i].value
       );
       if (letter_bank[index]) {
-        letter_bank[index].count -= 1;
-      } else if (boxes[i].value !== "" && day != 0) {
+        if (letter_bank[index].count < 1 && day != 0) {
+          alert(
+            "There are no " + boxes[i].value + "s left in the letter bank."
+          );
+        } else {
+          letter_bank[index].count -= 1;
+        }
+      } else if (boxes[i].value != "" && day != 0) {
         alert(
           "There are no more " + boxes[i].value + "s left in the letter bank."
         );
@@ -516,7 +522,7 @@
   }
 
   let box_width = "3vw";
-  let font_size = "3vw";
+  let font_size = "2.5vw";
   let raw_box_width = 150;
   function find_needed_width() {
     console.log(columns);
@@ -630,8 +636,6 @@
             rows -= 1;
           }}>Remove Row</button
         >
-        <!-- Columns <input type="number" bind:value={columns}/>
-      Rows <input type="number" bind:value={rows}/> -->
       {/if}
     </div>
     {#if day != 0}
