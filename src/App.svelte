@@ -158,14 +158,14 @@
       if (letter_bank[index]) {
         if (letter_bank[index].count < 1 && day != 0) {
           alert(
-            "There are no " + boxes[i].value + "s left in the letter bank."
+            "You currently have too many" + boxes[i].value + "s,  there are no " + boxes[i].value + "s left in the letter bank, please delete one."
           );
         } else {
           letter_bank[index].count -= 1;
         }
       } else if (boxes[i].value != "" && day != 0) {
         alert(
-          "There are no more " + boxes[i].value + "s left in the letter bank."
+            "You currently have too many" + boxes[i].value + "s,  there are no " + boxes[i].value + "s left in the letter bank, please delete one."
         );
       }
     }
