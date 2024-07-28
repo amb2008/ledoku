@@ -704,7 +704,13 @@ if (day == 0){
       {/each}
     </div>
   </div>
-  {#if correct}
+  {#if day === 0}
+  <textarea class="word-bank" id="word-bank" placeholder="Words you want to use" on:change={()=>{wordbank=true}} on:focus={()=>{wordbank=true}} on:blur={()=>{wordbank=false}}></textarea>
+  {/if}
+  {#if day === 0}
+  {/if}
+  </body>
+  {#if !correct}
     <div class="correct">
       You Won!
       <button
@@ -715,13 +721,6 @@ if (day == 0){
       >
     </div>
   {/if}
-  {#if day === 0}
-  <textarea class="word-bank" id="word-bank" placeholder="Words you want to use" on:change={()=>{wordbank=true}} on:focus={()=>{wordbank=true}} on:blur={()=>{wordbank=false}}></textarea>
-  {/if}
-  {#if day === 0}
-  {/if}
-  </body>
-
 
 <style>
 
