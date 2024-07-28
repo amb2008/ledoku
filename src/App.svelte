@@ -56,6 +56,7 @@
   let url = url_object.href;
   // let title = "Ledoku #" + day;
   let title = "CleanTechies";
+  let type = "";
 
   if (url.includes("dalton")) {
     day = 2;
@@ -65,19 +66,26 @@
     title = "Sandbox";
   } else if (url.includes("195")) {
     day = 4;
-    title = "CleanTechies EP #195";
+    title = "Commute";
+    type = "CleanTechies";
   } else if (url.includes("196")) {
     day = 5;
-    title = "CleanTechies EP #196";
+    title = "Natural Capital";
+    type = "CleanTechies";
   } else if (url.includes("197")) {
     day = 6;
-    title = "CleanTechies EP #197";
+    title = "The Vote";
+    type = "CleanTechies";
   } else if (url.includes("cleantechies")) {
     day = 3;
     title = "CleanTechies";
+    type = "CleanTechies";
   }
 
+  let start = false;
+
   if (day == 0) {
+    start = true;
     setTimeout(() => {
       const wordbank_input = document.getElementById("word-bank");
       wordbank_input.addEventListener("input", () => {
@@ -158,14 +166,22 @@
       if (letter_bank[index]) {
         if (letter_bank[index].count < 1 && day != 0) {
           alert(
-            "You currently have too many" + boxes[i].value + "s,  there are no " + boxes[i].value + "s left in the letter bank, please delete one."
+            "You currently have too many" +
+              boxes[i].value +
+              "s,  there are no " +
+              boxes[i].value +
+              "s left in the letter bank, please delete one."
           );
         } else {
           letter_bank[index].count -= 1;
         }
       } else if (boxes[i].value != "" && day != 0) {
         alert(
-            "You currently have too many" + boxes[i].value + "s,  there are no " + boxes[i].value + "s left in the letter bank, please delete one."
+          "You currently have too many" +
+            boxes[i].value +
+            "s,  there are no " +
+            boxes[i].value +
+            "s left in the letter bank, please delete one."
         );
       }
     }
@@ -824,8 +840,8 @@
       <strong>Autocheck Used:</strong>
       {autocheck_used ? "Yes" : "No"}
     </p>
-    {#if title.includes("CleanTechies") && day != 3}
-      {#if hint_counter == 0 && autocheck_used == false}
+    {#if (type = "CleanTechies" && day != 3)}
+      {#if hint_counter < 4 && autocheck_used == false}
         <p style="font-size: 40px; margin-top: 60px; margin-bottom: -60px;">
           🎁 🎁 🎁
         </p>
@@ -841,6 +857,34 @@
         </p>
       {/if}
     {/if}
+  </div>
+{/if}
+{#if !start}
+  <div class="correct-screen"></div>
+  <div class="correct">
+    <button
+      style="scale: 1; background-color: white; position: absolute; right: 0px; top: -10px;"
+      on:click={() => {
+        start = true;
+      }}>X</button
+    >
+    <strong class="you-won">Ledoku</strong>
+    <p class="win-sub">Today's Theme: "{title}"</p>
+
+    <li class="start-p">
+      <strong>Fill in the board using the letter bank </strong>
+    </li>
+    <li class="start-p">
+      <strong>Every column and row must be a word</strong>
+    </li>
+    <li class="start-p"><strong>Any outlined area must be a word</strong></li>
+    <button
+      on:click={() => {
+        start = true;
+      }}
+      style="position: relative; top: 70px; font-size: 20px; margin-bottom: 50px;"
+      >Start</button
+    >
   </div>
 {/if}
 
@@ -974,6 +1018,15 @@
     top: 50px;
     width: 80%;
     left: 10%;
+  }
+
+  .start-p {
+    position: relative;
+    font-size: 20px;
+    top: 50px;
+    width: 80%;
+    left: 20%;
+    text-align: left;
   }
 
   .win-sub {
