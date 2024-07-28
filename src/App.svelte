@@ -40,13 +40,18 @@
   } else if (url.includes("sandbox")) {
     day = 0;
     title = "Sandbox";
-  } else if (url.includes("cleantechies195")){
+  } else if (url.includes("195")){
     day = 4;
     title = "CleanTechies EP #195";
-  } else if (url.includes("cleantechies196")){
+  } else if (url.includes("196")){
     day = 5;
     title = "CleanTechies EP #196";
-  } else if (url.includes("cleantechies")) {
+  } else if (url.includes("197")){
+    day = 6;
+    title = "CleanTechies EP #197";
+  }
+  
+  else if (url.includes("cleantechies")) {
     day = 3;
     title = "CleanTechies";
   }
