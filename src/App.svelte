@@ -11,15 +11,38 @@
     top_words,
     vert_middle_words,
     bottom_words,
+    hints,
   } from "./boards.js";
 
   let screen_width = window.innerWidth;
+  let seconds = 0;
+  let minutes = 0;
+  let hours = 0;
+  let final_time = "00:00:00";
+  let curr_time = "00:00:00";
+
+  setInterval(() => {
+    seconds += 1;
+    if (seconds === 60) {
+      seconds = 0;
+      minutes += 1;
+    }
+    if (minutes === 60) {
+      minutes = 0;
+      hours += 1;
+    }
+
+    let curr_mins = minutes < 10 ? "0" + minutes : minutes;
+    let curr_secs = seconds < 10 ? "0" + seconds : seconds;
+    let curr_hours = hours < 10 ? "0" + hours : hours;
+    curr_time = curr_hours + ":" + curr_mins + ":" + curr_secs;
+  }, 1000);
   // let too_small = false;
 
   if (screen_width < 750) {
     alert("This game is not optimized for mobile, please use desktop.");
   }
-  
+
   let wordbank = false;
   let var_answer = answer;
 
@@ -32,7 +55,7 @@
   let url_object = new URL(window.location.href);
   let url = url_object.href;
   // let title = "Ledoku #" + day;
-  let title = "CleanTechies"
+  let title = "CleanTechies";
 
   if (url.includes("dalton")) {
     day = 2;
@@ -40,26 +63,26 @@
   } else if (url.includes("sandbox")) {
     day = 0;
     title = "Sandbox";
-  } else if (url.includes("195")){
+  } else if (url.includes("195")) {
     day = 4;
     title = "CleanTechies EP #195";
-  } else if (url.includes("196")){
+  } else if (url.includes("196")) {
     day = 5;
     title = "CleanTechies EP #196";
-  } else if (url.includes("197")){
+  } else if (url.includes("197")) {
     day = 6;
     title = "CleanTechies EP #197";
-  }
-  
-  else if (url.includes("cleantechies")) {
+  } else if (url.includes("cleantechies")) {
     day = 3;
     title = "CleanTechies";
   }
 
-if (day == 0){
+  if (day == 0) {
     setTimeout(() => {
-        const wordbank_input = document.getElementById("word-bank");
-        wordbank_input.addEventListener('input', ()=>{wordbank=true, wordbank=wordbank});
+      const wordbank_input = document.getElementById("word-bank");
+      wordbank_input.addEventListener("input", () => {
+        (wordbank = true), (wordbank = wordbank);
+      });
     }, 1000);
   }
 
@@ -94,7 +117,9 @@ if (day == 0){
     letter_bank = [];
     for (let i = 0; i < var_answer[day].length; i++) {
       let index = -1;
-      index = letter_bank.findIndex((item) => item.letter === var_answer[day][i]);
+      index = letter_bank.findIndex(
+        (item) => item.letter === var_answer[day][i]
+      );
       if (index != -1) {
         letter_bank[index].count += 1;
       } else {
@@ -164,18 +189,24 @@ if (day == 0){
         starting_letters[i] === "null"
       ) {
         correct = false;
+      } else {
+        let final_mins = minutes < 10 ? "0" + minutes : minutes;
+        let final_secs = seconds < 10 ? "0" + seconds : seconds;
+        let final_hours = hours < 10 ? "0" + hours : hours;
+        final_time = final_hours + ":" + final_mins + ":" + final_secs;
       }
     }
     if (day === 0) {
       console.log(structure);
     }
   }
+  // correct = true;
 
   let lastInput = 0;
   let direction = "right";
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Backspace" && wordbank==false) {
+    if (event.key === "Backspace" && wordbank == false) {
       setTimeout(() => {
         if (direction === "right") {
           prevInput();
@@ -185,28 +216,28 @@ if (day == 0){
       }, 1);
     }
 
-    if (event.key === "ArrowRight" && wordbank==false) {
+    if (event.key === "ArrowRight" && wordbank == false) {
       nextInput2();
     }
 
-    if (event.key === "ArrowLeft" && wordbank==false) {
+    if (event.key === "ArrowLeft" && wordbank == false) {
       prevInput();
     }
 
-    if (event.key === "ArrowDown" && wordbank==false) {
+    if (event.key === "ArrowDown" && wordbank == false) {
       downInput();
     }
 
-    if (event.key === "ArrowUp" && wordbank==false) {
+    if (event.key === "ArrowUp" && wordbank == false) {
       upInput();
     }
 
-    if (event.key === "Enter" && wordbank==false) {
+    if (event.key === "Enter" && wordbank == false) {
       clickDirectionSwap(`box${lastInput}`);
       document.getElementById(`box${lastInput}`).focus();
     }
 
-    if (event.key === "Tab" && wordbank==false) {
+    if (event.key === "Tab" && wordbank == false) {
       clickDirectionSwap(`box${lastInput}`);
       setTimeout(() => {
         document.getElementById(`box${lastInput}`).focus();
@@ -409,6 +440,7 @@ if (day == 0){
   }
 
   let autocheck = false;
+  let autocheck_used = false;
 
   window.onload = function () {
     document.getElementById("box0").focus();
@@ -463,28 +495,39 @@ if (day == 0){
     }
   }
 
-  function hint(){
+  let hint_counter = 0;
+  function hint() {
+    hint_counter += 1;
     let unshown_letters = [];
-    for (let i = 0; i < boxes.length; i++){
-      if (boxes[i].value == "" && var_answer[day][i] != "null" && starting_letters[i] == "null"){
+    for (let i = 0; i < boxes.length; i++) {
+      if (
+        boxes[i].value == "" &&
+        var_answer[day][i] != "null" &&
+        starting_letters[i] == "null"
+      ) {
         unshown_letters.push(i);
       }
     }
 
     let random_index = Math.floor(Math.random() * unshown_letters.length);
-    starting_letters[unshown_letters[random_index]] = var_answer[day][unshown_letters[random_index]];
+    starting_letters[unshown_letters[random_index]] =
+      var_answer[day][unshown_letters[random_index]];
     checkvar_answer();
   }
 
   let box_width = "3vw";
   let font_size = "3vw";
   let raw_box_width = 150;
-  function find_needed_width(){
+  function find_needed_width() {
+    console.log(columns);
     let grid_element = document.getElementById("grid-container");
-    let grid_width = grid_element.offsetWidth;
-    box_width = grid_width / columns;
-    raw_box_width = box_width;
-    box_width = box_width + "px";
+    setTimeout(() => {
+      let grid_width = grid_element.offsetWidth;
+
+      box_width = grid_width / (columns * 1.1);
+      raw_box_width = box_width;
+      box_width = box_width + "px";
+    }, 10);
   }
 
   setTimeout(() => {
@@ -493,31 +536,41 @@ if (day == 0){
 
   $: {
     if (old_columns != columns || old_rows != rows) {
-      if (old_columns < columns){
-        let counter = 0
+      if (old_columns < columns) {
+        let counter = 0;
         for (let i = 0; i < rows; i++) {
-          boxes.splice(i*old_columns+counter+old_columns, 0, { id: `box${i}`, value: "", show: true, background: "white" });
-          var_answer[day].splice(i+counter, 0, "Q");
+          boxes.splice(i * old_columns + counter + old_columns, 0, {
+            id: `box${i}`,
+            value: "",
+            show: true,
+            background: "white",
+          });
+          var_answer[day].splice(i + counter, 0, "Q");
           starting_letters.push("null");
           counter += 1;
         }
-        widths[day] +=1 
-      } else if (old_columns > columns){
-        let counter = 0
+        widths[day] += 1;
+      } else if (old_columns > columns) {
+        let counter = 0;
         for (let i = 0; i < rows; i++) {
-          boxes.splice(i*old_columns+counter+old_columns-1, 1);
-          var_answer[day].splice(i+counter, 1);
-          starting_letters.splice(i+counter, 1);
+          boxes.splice(i * old_columns + counter + old_columns - 1, 1);
+          var_answer[day].splice(i + counter, 1);
+          starting_letters.splice(i + counter, 1);
           counter -= 1;
-        } 
-        widths[day] -=1 
-      } else if (old_rows < rows){
+        }
+        widths[day] -= 1;
+      } else if (old_rows < rows) {
         for (let i = 0; i < columns; i++) {
-          boxes.push({ id: `box${i}`, value: "", show: true, background: "white" });
+          boxes.push({
+            id: `box${i}`,
+            value: "",
+            show: true,
+            background: "white",
+          });
           var_answer[day].push("Q");
           starting_letters.push("null");
         }
-      } else if (old_rows > rows){
+      } else if (old_rows > rows) {
         for (let i = 0; i < columns; i++) {
           boxes.pop();
           var_answer[day].pop();
@@ -525,53 +578,74 @@ if (day == 0){
         }
       }
 
-      for (let i = 0; i<boxes.length; i++){
-        boxes[i].id = `box${i}`
+      for (let i = 0; i < boxes.length; i++) {
+        boxes[i].id = `box${i}`;
       }
-      var_answer = var_answer
-      boxes = boxes
+      var_answer = var_answer;
+      boxes = boxes;
       old_columns = columns;
       old_rows = rows;
     }
   }
 </script>
 
-<body>
+<body style="filter: {correct ? 'blur(4px)' : ''}" id="body">
   <div class="game-container">
     <h1>{title}</h1>
     <div class="button-container">
       <button on:click={reset}>Reset</button>
       {#if day != 0}
-      <button on:click={showInstructions}>Instructions</button>
-      <button
-        on:click={() => {
-          autocheck = !autocheck;
-        }}
-      >
-        Autocheck
-        <input type="checkbox" checked={autocheck} />
-      </button>
-      <button on:click={hint}>Hint</button>
+        <button on:click={showInstructions}>Instructions</button>
+        <button
+          on:click={() => {
+            autocheck = !autocheck;
+            autocheck_used = true;
+          }}
+        >
+          Autocheck
+          <input type="checkbox" checked={autocheck} />
+        </button>
+        <button on:click={hint}>Hint</button>
+        <button style="cursor: default; border: none">
+          Time Used: {curr_time}
+        </button>
       {:else}
-      <button on:click={()=>{columns+=1}}>Add Column</button>
-      <button on:click={()=>{columns-=1}}>Remove Column</button>
-      <button on:click={()=>{rows+=1}}>Add Row</button>
-      <button on:click={()=>{rows-=1}}>Remove Row</button>
-      <!-- Columns <input type="number" bind:value={columns}/>
+        <button
+          on:click={() => {
+            columns += 1;
+          }}>Add Column</button
+        >
+        <button
+          on:click={() => {
+            columns -= 1;
+          }}>Remove Column</button
+        >
+        <button
+          on:click={() => {
+            rows += 1;
+          }}>Add Row</button
+        >
+        <button
+          on:click={() => {
+            rows -= 1;
+          }}>Remove Row</button
+        >
+        <!-- Columns <input type="number" bind:value={columns}/>
       Rows <input type="number" bind:value={rows}/> -->
       {/if}
     </div>
     {#if day != 0}
-    <div class="letter-bank">
-      <div class="letter-bank-label">Letter Bank</div>
-      <div class="letter-bank-content">
-        {#each letter_bank as item, i}
-          {#if item.letter != "null" && item.count > 0}
-            <span><strong>{item.letter}</strong><sub>{item.count}</sub></span> &nbsp;
-          {/if}
-        {/each}
+      <div class="letter-bank">
+        <div class="letter-bank-label">Letter Bank</div>
+        <div class="letter-bank-content">
+          {#each letter_bank as item, i}
+            {#if item.letter != "null" && item.count > 0}
+              <span><strong>{item.letter}</strong><sub>{item.count}</sub></span>
+              &nbsp;
+            {/if}
+          {/each}
+        </div>
       </div>
-    </div>
     {/if}
     <div
       id="grid-container"
@@ -626,7 +700,9 @@ if (day == 0){
                 type="text"
                 value={starting_letters[i]}
                 disabled
-                style="width: {box_width}; height: {box_width}; margin-left: {raw_box_width/-2 + "px"}; font-size: {font_size}; color: green; background: {background};"
+                style="width: {box_width}; height: {box_width}; margin-left: {raw_box_width /
+                  -2 +
+                  'px'}; font-size: {font_size}; color: green; background: {background};"
               />
             </div>
           {:else}
@@ -684,7 +760,9 @@ if (day == 0){
                   directionSwap(id);
                 }}
                 on:input={handleInput(id)}
-                style="width: {box_width}; height: {box_width}; margin-left: {raw_box_width/-2 + "px"}; font-size: {font_size}; color: {value.length > 0
+                style="width: {box_width}; height: {box_width}; margin-left: {raw_box_width /
+                  -2 +
+                  'px'}; font-size: {font_size}; color: {value.length > 0
                   ? autocheck
                     ? value != var_answer[day][i]
                       ? 'red'
@@ -696,8 +774,11 @@ if (day == 0){
             </div>
           {/if}
         {:else}
-          <div class="grid-item" style="background-color: black; width: {box_width}; 
-              height: {box_width};">
+          <div
+            class="grid-item"
+            style="background-color: black; width: {box_width}; 
+              height: {box_width};"
+          >
             <input type="text" disabled style="background-color: black;" />
           </div>
         {/if}
@@ -705,36 +786,71 @@ if (day == 0){
     </div>
   </div>
   {#if day === 0}
-  <textarea class="word-bank" id="word-bank" placeholder="Words you want to use" on:change={()=>{wordbank=true}} on:focus={()=>{wordbank=true}} on:blur={()=>{wordbank=false}}></textarea>
+    <textarea
+      class="word-bank"
+      id="word-bank"
+      placeholder="Words you want to use"
+      on:change={() => {
+        wordbank = true;
+      }}
+      on:focus={() => {
+        wordbank = true;
+      }}
+      on:blur={() => {
+        wordbank = false;
+      }}
+    ></textarea>
   {/if}
-  {#if day === 0}
-  {/if}
-  </body>
-  {#if correct}
-    <div class="correct">
-      You Won!
-      <button
-        style="scale: 0.4; background-color: white"
-        on:click={() => {
-          correct = false;
-        }}>X</button
-      >
-    </div>
-  {/if}
+  {#if day === 0}{/if}
+</body>
+{#if correct}
+  <div class="correct-screen"></div>
+  <div class="correct">
+    <button
+      style="scale: 1; background-color: white; position: absolute; right: 0px; top: -10px;"
+      on:click={() => {
+        correct = false;
+      }}>X</button
+    >
+    <strong class="you-won">You Won! 🎉</strong>
+    <p class="win-sub">"{title}"</p>
+    <p class="win-p"><strong>Time Used:</strong> {final_time}</p>
+    <p class="win-p"><strong>Hints Used:</strong> {hint_counter}</p>
+    <p class="win-p">
+      <strong>Autocheck Used:</strong>
+      {autocheck_used ? "Yes" : "No"}
+    </p>
+    {#if title.includes("CleanTechies") && day != 3}
+      {#if hint_counter == 0 && autocheck_used == false}
+        <p style="font-size: 40px; margin-top: 60px; margin-bottom: -60px;">
+          🎁 🎁 🎁
+        </p>
+        <p class="win-p">
+          For your great work we have a special prize for you! You get a hint
+          about who our next guest is: {hints[day]}
+        </p>
+      {:else}
+        <p class="win-p">
+          In order to get a clue as to who our next guest you can't use
+          autocheck or hints, but come back next time to try again for our next
+          episode!
+        </p>
+      {/if}
+    {/if}
+  </div>
+{/if}
 
 <style>
-
-  body{
+  body {
     background: white;
   }
 
-  @media (min-width: 750px){
-    body{
+  @media (min-width: 750px) {
+    body {
       scale: 0.9;
       margin-top: -3vw;
-      overflow: hidden;
     }
-  } 
+  }
 
   .game-container {
     margin-bottom: 100px;
@@ -785,7 +901,7 @@ if (day == 0){
     flex-direction: column;
   }
 
-  .letter-bank-label{
+  .letter-bank-label {
     font-size: 20px;
     align-self: flex-start;
     background-color: rgb(204, 242, 255);
@@ -809,21 +925,57 @@ if (day == 0){
     overflow-x: scroll;
   }
 
-  .correct {
-    left: 20vw;
-    top: 25vw;
-    width: 60vw;
-    height: 10vw;
+  .correct-screen {
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
     position: fixed;
-    background-color: green;
-    color: white;
+    background-color: gray;
+    opacity: 0.5;
+  }
+
+  .correct {
+    left: 30vw;
+    top: 20vh;
+    width: 40vw;
+    position: absolute;
+    background-color: white;
+    color: black;
     padding: 10px;
     text-align: center;
     border-radius: 20px;
     font-size: 30px;
-    line-height: 10vw;
-    filter: blur(0.5px);
-    opacity: 0.9;
+    margin-bottom: 20px;
+    box-shadow: -10px 10px 90px -40px black;
+    padding-bottom: 60px;
+  }
+
+  @media (max-width: 750px) {
+    .correct {
+      left: 10vw;
+      width: 80vw;
+    }
+  }
+
+  .you-won {
+    position: relative;
+    top: 50px;
+    font-size: 44px;
+  }
+
+  .win-p {
+    position: relative;
+    font-size: 20px;
+    top: 50px;
+    width: 80%;
+    left: 10%;
+  }
+
+  .win-sub {
+    position: relative;
+    font-size: 15px;
+    top: 30px;
   }
 
   button {
