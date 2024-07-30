@@ -69,12 +69,16 @@
     title = "Commute";
     type = "CleanTechies";
   } else if (url.includes("196")) {
-    day = 5;
-    title = "Natural Capital";
-    type = "CleanTechies";
-  } else if (url.includes("197")) {
     day = 6;
     title = "The Vote";
+    type = "CleanTechies";
+  } else if (url.includes("197")) {
+    day = 7;
+    title = "Fleet Power";
+    type = "CleanTechies";
+  } else if (url.includes("198")) {
+    day = 5;
+    title = "Natural Capital";
     type = "CleanTechies";
   } else if (url.includes("cleantechies")) {
     day = 3;
@@ -164,25 +168,9 @@
         (item) => item.letter === boxes[i].value
       );
       if (letter_bank[index]) {
-        if (letter_bank[index].count < 1 && day != 0) {
-          alert(
-            "You currently have too many" +
-              boxes[i].value +
-              "s,  there are no " +
-              boxes[i].value +
-              "s left in the letter bank, please delete one."
-          );
-        } else {
-          letter_bank[index].count -= 1;
-        }
+        letter_bank[index].count -= 1;
       } else if (boxes[i].value != "" && day != 0) {
-        alert(
-          "You currently have too many" +
-            boxes[i].value +
-            "s,  there are no " +
-            boxes[i].value +
-            "s left in the letter bank, please delete one."
-        );
+        letter_bank.push({ letter: boxes[i].value, count: -1 });
       }
     }
 
@@ -540,13 +528,14 @@
   let box_width = "3vw";
   let font_size = "2.5vw";
   let raw_box_width = 150;
+  let vw_unit = 0.35 * columns;
   function find_needed_width() {
     console.log(columns);
     let grid_element = document.getElementById("grid-container");
     setTimeout(() => {
       let grid_width = grid_element.offsetWidth;
 
-      box_width = grid_width / (columns * 1.1);
+      box_width = grid_width / (columns * 1.1) + 260 / (columns * 2);
       raw_box_width = box_width;
       box_width = box_width + "px";
     }, 10);
@@ -661,6 +650,11 @@
           {#each letter_bank as item, i}
             {#if item.letter != "null" && item.count > 0}
               <span><strong>{item.letter}</strong><sub>{item.count}</sub></span>
+              &nbsp;
+            {:else if item.letter != "null" && item.count < 0}
+              <span style="color: red"
+                ><strong>{item.letter}</strong><sub>{item.count}</sub></span
+              >
               &nbsp;
             {/if}
           {/each}
