@@ -12,6 +12,7 @@
     vert_middle_words,
     bottom_words,
     hints,
+    titles,
   } from "./boards.js";
 
   let screen_width = window.innerWidth;
@@ -20,23 +21,10 @@
   let hours = 0;
   let final_time = "00:00:00";
   let curr_time = "00:00:00";
+  let timeRemaining = {};
+  let timeRemainingString = "";
 
-  setInterval(() => {
-    seconds += 1;
-    if (seconds === 60) {
-      seconds = 0;
-      minutes += 1;
-    }
-    if (minutes === 60) {
-      minutes = 0;
-      hours += 1;
-    }
-
-    let curr_mins = minutes < 10 ? "0" + minutes : minutes;
-    let curr_secs = seconds < 10 ? "0" + seconds : seconds;
-    let curr_hours = hours < 10 ? "0" + hours : hours;
-    curr_time = curr_hours + ":" + curr_mins + ":" + curr_secs;
-  }, 1000);
+  let start = false;
   // let too_small = false;
 
   if (screen_width < 750) {
@@ -54,7 +42,8 @@
 
   let url_object = new URL(window.location.href);
   let url = url_object.href;
-  // let title = "Ledoku #" + day;
+  let slug = url_object.pathname;
+  let slug_int = parseInt(slug.slice(1));
   let title = "CleanTechies";
   let type = "";
 
@@ -64,29 +53,101 @@
   } else if (url.includes("sandbox")) {
     day = 0;
     title = "Sandbox";
-  } else if (url.includes("195")) {
-    day = 4;
-    title = "Commute";
-    type = "CleanTechies";
-  } else if (url.includes("196")) {
-    day = 6;
-    title = "The Vote";
-    type = "CleanTechies";
-  } else if (url.includes("197")) {
-    day = 7;
-    title = "Fleet Power";
-    type = "CleanTechies";
-  } else if (url.includes("198")) {
-    day = 5;
-    title = "Natural Capital";
-    type = "CleanTechies";
   } else if (url.includes("cleantechies")) {
     day = 3;
     title = "CleanTechies";
     type = "CleanTechies";
+  } else if (slug_int) {
+    day = slug_int - 191;
+    type = "CleanTechies";
+    console.log(day);
+    if (day == 5) {
+      day = 6;
+    } else if (day == 6) {
+      day = 7;
+    } else if (day == 7) {
+      day = 5;
+    }
+  } else {
+    timeRemaining = { hours: 0, minutes: 0, seconds: 0 };
+    let intervalCount = 0;
+    const fixedStartDate = new Date("2024-07-29T00:00:00");
+    let currentDate = new Date();
+    let start_date = new Date(fixedStartDate);
+    while (start_date <= currentDate) {
+      start_date.setDate(start_date.getDate() + 3);
+      intervalCount++;
+    }
+    console.log(start_date);
+    console.log(currentDate);
+    intervalCount -= 1;
+    day = intervalCount + 4;
+
+    const timeDiff = start_date - currentDate;
+
+    timeRemaining.hours = Math.floor(timeDiff / 3600000); // 3600000 ms in an hour
+    timeRemaining.minutes = Math.floor((timeDiff % 3600000) / 60000); // 60000 ms in a minute
+    timeRemaining.seconds = Math.floor((timeDiff % 60000) / 1000); // 1000 ms in a second
+    if (day == 5) {
+      day = 6;
+    } else if (day == 6) {
+      day = 7;
+    } else if (day == 7) {
+      day = 5;
+    }
   }
 
-  let start = false;
+  setInterval(() => {
+    if (start) {
+      seconds += 1;
+      if (seconds === 60) {
+        seconds = 0;
+        minutes += 1;
+      }
+      if (minutes === 60) {
+        minutes = 0;
+        hours += 1;
+      }
+
+      let curr_mins = minutes < 10 ? "0" + minutes : minutes;
+      let curr_secs = seconds < 10 ? "0" + seconds : seconds;
+      let curr_hours = hours < 10 ? "0" + hours : hours;
+      curr_time = curr_hours + ":" + curr_mins + ":" + curr_secs;
+    }
+
+    if (timeRemaining.hours) {
+      timeRemaining.seconds -= 1;
+      if (timeRemaining.seconds < 0) {
+        timeRemaining.seconds = 59;
+        timeRemaining.minutes -= 1;
+      }
+      if (timeRemaining.minutes < 0) {
+        timeRemaining.minutes = 59;
+        timeRemaining.hours -= 1;
+      }
+      let curr_hours =
+        timeRemaining.hours < 10
+          ? "0" + timeRemaining.hours
+          : timeRemaining.hours;
+      let curr_mins =
+        timeRemaining.minutes < 10
+          ? "0" + timeRemaining.minutes
+          : timeRemaining.minutes;
+      let curr_secs =
+        timeRemaining.seconds < 10
+          ? "0" + timeRemaining.seconds
+          : timeRemaining.seconds;
+
+      timeRemainingString = curr_hours + ":" + curr_mins + ":" + curr_secs;
+    }
+  }, 1000);
+
+  if (titles.length > day) {
+    title = titles[day];
+  } else {
+    day = 3;
+    title = "CleanTechies";
+  }
 
   if (day == 0) {
     start = true;
@@ -528,16 +589,12 @@
   let box_width = "3vw";
   let font_size = "2.5vw";
   let raw_box_width = 150;
-  let vw_unit = 0.35 * columns;
   function find_needed_width() {
-    console.log(columns);
     let grid_element = document.getElementById("grid-container");
     setTimeout(() => {
       let grid_width = grid_element.offsetWidth;
-
-      box_width = grid_width / (columns * 1.1) + 260 / (columns * 2);
-      raw_box_width = box_width;
-      box_width = box_width + "px";
+      raw_box_width = grid_width / widths[day];
+      box_width = raw_box_width + "px";
     }, 10);
   }
 
@@ -600,7 +657,7 @@
   }
 </script>
 
-<body style="filter: {correct ? 'blur(4px)' : ''}" id="body">
+<body style="filter: {correct || !start ? 'blur(4px)' : ''}" id="body">
   <div class="game-container">
     <h1>{title}</h1>
     <div class="button-container">
@@ -834,6 +891,13 @@
       <strong>Autocheck Used:</strong>
       {autocheck_used ? "Yes" : "No"}
     </p>
+    {#if timeRemainingString.length > 0}
+      <p class="win-p" style="font-size: 30px">
+        <strong>Time Until Next Puzzle:</strong>
+        <br />
+        {timeRemainingString}
+      </p>
+    {/if}
     {#if (type = "CleanTechies" && day != 3)}
       {#if hint_counter < 4 && autocheck_used == false}
         <p style="font-size: 40px; margin-top: 60px; margin-bottom: -60px;">

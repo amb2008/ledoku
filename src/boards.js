@@ -12,8 +12,9 @@ const right_words = [[],[9, 19], [5, 134, 140], [7, 57, 27], [39, 75, 65, 7], [1
 const top_words = [[],[], [90], [23], [], [22, 32, 6], [36, 13], [7]]
 const vert_middle_words = [[],[], [105, 120, 135], [35, 47], [], [33, 44, 43, 54, 17], [45, 54, 22, 31], [15, 23]]
 const bottom_words = [[],[], [150], [59], [], [55, 65, 28], [63, 40], [31]]
-const hints = ["", "", "", "", "He works at Elements World", "He works at Zacua Ventures", "She wrote an incredible article about how a Trump administration could affect climate investing",
+const hints = ["", "", "", "", "He works at Elements World", "He works at Zacua Ventures", "She wrote an incredible article about how a Trump administration could affect climate investing", "He works at Curo"
 ]
+const titles = ["Sandbox", "Ledoku", "Dalton", "CleanTechies", "Commute", "Natural Capital", "The Vote", "Fleet Power"]
 
 const answer = [
   [],
@@ -241,4 +242,4 @@ const starting_letters_ind = [
   [0, 3, 4, 6, 8, 9, 13, 15, 18, 19, 20, 24, 29, 32, 34, 36, 41, 42, 44]
 ];
 
-export {answer, starting_letters_ind, all_words, left_words, middle_words, right_words, widths, top_words, vert_middle_words, bottom_words, hints}
+export {answer, starting_letters_ind, all_words, left_words, middle_words, right_words, widths, top_words, vert_middle_words, bottom_words, hints, titles}
