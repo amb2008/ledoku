@@ -71,7 +71,7 @@
   } else {
     timeRemaining = { hours: 0, minutes: 0, seconds: 0 };
     let intervalCount = 0;
-    const fixedStartDate = new Date("2024-07-29T00:00:00");
+    const fixedStartDate = new Date("2024-08-01T00:00:00");
     let currentDate = new Date();
     let start_date = new Date(fixedStartDate);
     while (start_date <= currentDate) {
